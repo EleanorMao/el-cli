@@ -9,7 +9,11 @@ const fsWriteFile = promisify(fs.writeFile)
 let globalConfig: IGlobalConfig = {
   customRepos: [],
   officialRepos: [],
-  gitlabToken: '',
+  baseConfig: {
+    url: '',
+    token: '',
+    templatesGroupId: ''
+  },
 }
 
 try {

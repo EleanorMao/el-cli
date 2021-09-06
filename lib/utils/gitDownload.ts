@@ -8,9 +8,9 @@ async function gitDownload(gitPath: string, localPath: string): Promise<string> 
   return oraWrap(
     checkPath(localPath)
       .then(() => {
-        return promisify(downloadGitRepo)(`direct:https://gitlab.com/${gitName}/-/archive/${version === 'default' ? 'master' : version}/temp.zip`, localPath, {
+        return promisify(downloadGitRepo)(`direct:${globalConfig.baseConfig.url}/${gitName}/-/archive/${version === 'default' ? 'master' : version}/temp.zip`, localPath, {
           clone: false, headers: {
-            'Private-Token': globalConfig.gitlabToken,
+            'Private-Token': globalConfig.baseConfig.token,
           }
         })
       })

@@ -7,10 +7,16 @@ export interface IRepoConfig {
   url: string
 }
 
+export interface IGitlabGlobalConfig {
+  url: string
+  token: string
+  templatesGroupId: string
+}
+
 export interface IGlobalConfig {
   officialRepos: IRepoConfig[]
   customRepos: IRepoConfig[]
-  gitlabToken: string
+  baseConfig: IGitlabGlobalConfig
 }
 
 export interface IGitTag {
