@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import inqurier from 'inquirer'
+import inquirer from 'inquirer'
 import addAction from './add'
 import RepoGenerator from '../generators/RepoGenerator'
 import {isFileExist, getGitNameFromPath} from '../utils/common'
@@ -17,10 +17,23 @@ export default async function createAction(projectName: string) {
   if (!isInCurrentDir && await isFileExist(destPath)) {
     return console.log(chalk.yellow(`[el-cli] project ${projectName} is already exist.`))
   }
+  const configured = !!globalConfig.baseConfig.url
+  let needSync = !globalConfig.officialRepos.length
+  if (configured && !needSync) {
+    const {sync} = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'sync',
+        message: 'Do you need to resynchronize official templates?',
+        default: false
+      }
+    ])
+    needSync = sync
+  }
 
-  const officialRepos = globalConfig.officialRepos.length ? globalConfig.officialRepos : await syncAll()
+  const officialRepos = configured && needSync ? await syncAll() : globalConfig.officialRepos
   const allRepos = [...officialRepos, ...globalConfig.customRepos]
-  const {repoUrl} = await inqurier.prompt([
+  const {repoUrl} = await inquirer.prompt([
     {
       type: 'list',
       name: 'repoUrl',
@@ -45,7 +58,7 @@ export default async function createAction(projectName: string) {
   let version = 'default'
   const tagsList = await getTagsByProjectName(gitName)
   if (tagsList.length) {
-    const answer = await inqurier.prompt([
+    const answer = await inquirer.prompt([
       {
         type: 'list',
         name: 'version',

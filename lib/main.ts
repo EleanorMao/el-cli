@@ -5,7 +5,7 @@ import removeAction from './actions/remove';
 import syncAction from './actions/sync';
 import addAction from './actions/add';
 import listAction from './actions/list';
-import {setToken, getToken} from './actions/token'
+import {setGitlab, getGitlabConfig} from './actions/setGitlab'
 
 program.version(require('../package').version)
 
@@ -34,5 +34,17 @@ program
   .command('remove [repoName]')
   .description('remove a custom git repo template')
   .action(removeAction)
+
+program.command('sync').description('sync official git repo templates').action(syncAction)
+program.command('config')
+  .option('--edit', 'set gitlab configs')
+  .option('--list', 'view current gitlab config')
+  .action(async opts => {
+    if (opts.edit) {
+      await setGitlab()
+    } else {
+      await getGitlabConfig()
+    }
+  })
 
 program.parse(process.argv);

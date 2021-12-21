@@ -19,7 +19,8 @@ async function getTagsFromGit(projectName: string): Promise<IGitTag[]> {
   function getTagsByPage(page = 1) {
     return axios({
       method: 'get',
-      url: `${globalConfig.baseConfig.url}/api/v4/projects/${encodeProjectName}/repository/tags?per_page=100&page=${page}`,
+      baseURL: globalConfig.baseConfig.url,
+      url: `/api/v4/projects/${encodeProjectName}/repository/tags?per_page=100&page=${page}`,
       headers: {
         'Private-Token': globalConfig.baseConfig.token,
       }
@@ -59,8 +60,9 @@ export function getTagsByProjectName(projectName: string) {
 
 export async function fetchAllRepo(): Promise<IRepoConfig[]> {
   const resList: any = await axios({
+    baseURL: globalConfig.baseConfig.url,
+    url: `/api/v4/groups/${globalConfig.baseConfig.templatesGroupId}/projects`,
     method: 'get',
-    url: `${globalConfig.baseConfig.url}/api/v4/groups/${globalConfig.baseConfig.templatesGroupId}/projects`,
     headers: {
       'Private-Token': globalConfig.baseConfig.token,
     }
@@ -71,7 +73,6 @@ export async function fetchAllRepo(): Promise<IRepoConfig[]> {
       url: item.ssh_url_to_repo
     }
   })
-
 }
 
 export function getAllRepo(): Promise<IRepoConfig[]> {

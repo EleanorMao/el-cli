@@ -1,11 +1,11 @@
-import inqurier from 'inquirer'
+import inquirer from 'inquirer'
 import {saveConfigToFile, globalConfig} from '../config/globalConfig'
 import {getGitNameFromPath} from '../utils/common'
 import chalk from "chalk";
 
 export default async function addAction(gitUrl?: string) {
   if (!gitUrl) {
-    const {repoUrl} = await inqurier.prompt([
+    const {repoUrl} = await inquirer.prompt([
       {
         type: 'input',
         name: 'repoUrl',
@@ -33,7 +33,7 @@ export default async function addAction(gitUrl?: string) {
       customRepos
     }
 
-    await saveConfigToFile(JSON.stringify(newGlobalConfig, null, 2))
+    await saveConfigToFile(newGlobalConfig)
     console.log(chalk.green`[el-cli] success`)
   }
 

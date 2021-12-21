@@ -1,20 +1,16 @@
-import inqurier from 'inquirer'
+import inquirer from 'inquirer'
 import {saveConfigToFile, globalConfig} from '../config/globalConfig'
-import {getGitNameFromPath, isFileExist} from '../utils/common'
 import {IRepoConfig} from "../types/interface";
 import chalk from "chalk";
-import path from "path";
-import fs from 'fs';
-import {templatePath} from "../config/common";
 import clearAction from "./clear";
 
-export default async function removeAction(repoName?: string, version?: string) {
+export default async function removeAction(repoName?: string) {
   if (!globalConfig.customRepos.length) {
     console.log(chalk.green('[el-cli] no custom repo can be remove'))
     return
   }
   if (!repoName) {
-    const {name} = await inqurier.prompt([
+    const {name} = await inquirer.prompt([
       {
         type: 'list',
         name: 'name',
@@ -42,7 +38,7 @@ export default async function removeAction(repoName?: string, version?: string) 
     customRepos
   }
 
-  await saveConfigToFile(JSON.stringify(newGlobalConfig, null, 2))
+  await saveConfigToFile(newGlobalConfig)
 
   console.log(chalk.green('[el-cli] remove success'))
 

@@ -1,4 +1,4 @@
-import inqurier from 'inquirer'
+import inquirer from 'inquirer'
 import {globalConfig} from '../config/globalConfig'
 import {getGitNameFromPath, isFileExist} from '../utils/common'
 import chalk from "chalk";
@@ -13,7 +13,7 @@ export default async function clearAction(repoName?: string, version?: string) {
   ]
   let repoUrl
   if (!repoName) {
-    const {url} = await inqurier.prompt([
+    const {url} = await inquirer.prompt([
       {
         type: 'list',
         name: 'url',

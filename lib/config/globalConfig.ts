@@ -21,13 +21,12 @@ try {
 } catch (error) {
 }
 
-async function saveConfigToFile(config: any): Promise<void> {
+export async function saveConfigToFile(config: IGlobalConfig): Promise<void> {
   return checkPath(basePath).then(() => {
-    return fsWriteFile(globalConfigPath, config)
+    return fsWriteFile(globalConfigPath, JSON.stringify(config, null, 2))
   })
 }
 
 export {
   globalConfig,
-  saveConfigToFile
 }

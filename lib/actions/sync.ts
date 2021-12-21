@@ -5,19 +5,21 @@ import chalk from "chalk";
 import {oraWrap} from "../utils/common";
 
 export async function syncAll(): Promise<IRepoConfig[]> {
+  if (!globalConfig.baseConfig.url) {
+    console.log(chalk.yellow`[el-cli] please config first`)
+    return []
+  }
   const officialRepos = await getAllRepo()
   const newGlobalConfig: IGlobalConfig = {
     ...globalConfig,
     officialRepos
   }
-  await saveConfigToFile(JSON.stringify(newGlobalConfig, null, 2))
+  await saveConfigToFile(newGlobalConfig)
   console.log(chalk.green`[el-cli] update global config success`)
 
   return officialRepos
 }
 
 export default async function syncAction(tempName?: string) {
-  if (!tempName) {
-    const list = await syncAll()
-  }
+  const list = await syncAll()
 }
